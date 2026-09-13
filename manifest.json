@@ -1,7 +1,7 @@
 {
-  "name": "+1Bahia",
-  "short_name": "+1Bahia",
-  "start_url": "/#inicio",
+  "name": "Mais um Bahia",
+  "short_name": "Mais um Bahia",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#f4f7fb",
   "theme_color": "#003b7a",
