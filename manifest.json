@@ -1,0 +1,16 @@
+{
+  "name": "Bahia em Dia",
+  "short_name": "Bahia em Dia",
+  "start_url": "/#inicio",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#003b7a",
+  "description": "Notícias, chat e transmissões do Esporte Clube Bahia.",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
