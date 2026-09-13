@@ -1,1 +1,49 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#003b7a"><title>Painel administrativo | +1Bahia</title><link rel="icon" href="favicon.svg"><link rel="stylesheet" href="styles.css"></head><body data-page="admin"><header class="topbar"><a class="brand" href="index.html"><span class="crest">EC</span><span>+1<b>Bahia</b></span></a><a class="button outline" href="index.html">Voltar</a></header><main><div class="page-wrap"><p class="eyebrow">Área restrita</p><h1 class="page-title">Painel administrativo</h1><p id="adminGate" class="loading">Verificando autorização...</p></div></main><div class="toast" id="toast"></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script><script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw-kill.js",{scope:"/"}).catch(()=>{})}</script><script>window.addEventListener("error",function(e){var g=document.getElementById("adminGate");if(g)g.innerHTML="Erro ao carregar o painel: "+(e.message||"verifique a conexão e tente novamente.")+"<br><br><button class=\"button primary\" onclick=\"location.reload()\">Tentar novamente</button>"});window.addEventListener("unhandledrejection",function(e){var g=document.getElementById("adminGate");if(g)g.innerHTML="Erro ao conectar ao Supabase.<br><br><button class=\"button primary\" onclick=\"location.reload()\">Tentar novamente</button>"});</script><script src="app.js?v=clean20260913"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="theme-color" content="#003b7a">
+ <meta name="robots" content="noindex,nofollow">
+ <title>Painel administrativo | +1Bahia</title>
+ <link rel="icon" href="/favicon.svg">
+ <link rel="stylesheet" href="/styles.css">
+ <script>
+  function showPanelBootError(message){
+   const gate=document.getElementById('adminGate');
+   if(!gate)return;
+   gate.replaceChildren(document.createTextNode(message+' '));
+   const retry=document.createElement('button');
+   retry.type='button';retry.className='button primary';retry.textContent='Tentar novamente';
+   retry.onclick=()=>location.reload();gate.appendChild(retry);
+  }
+  window.addEventListener('error',event=>{
+   if(event.message)showPanelBootError('Erro ao carregar o painel: '+event.message);
+  });
+  window.addEventListener('unhandledrejection',()=>showPanelBootError('Falha ao iniciar a conexão. Tente novamente.'));
+  setTimeout(()=>showPanelBootError('O painel demorou para iniciar. Verifique se o navegador está bloqueando o carregamento dos scripts.'),15000);
+  // Only replace an existing legacy worker; do not install one on every visit.
+  if('serviceWorker' in navigator){
+   navigator.serviceWorker.getRegistrations().then(registrations=>{
+    if(registrations.length)return navigator.serviceWorker.register('/sw-kill.js',{scope:'/',updateViaCache:'none'});
+   }).catch(error=>console.warn('[+1Bahia legacy worker]',error));
+  }
+ </script>
+ <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4" onerror="showPanelBootError('Não foi possível carregar o cliente de autenticação. Verifique sua conexão ou bloqueador de conteúdo.')"></script>
+ <script defer src="/app.js?v=panel-fix-20260913" onerror="showPanelBootError('Não foi possível carregar o código do painel.')"></script>
+</head>
+<body data-page="admin">
+ <header class="topbar">
+  <a class="brand" href="/index.html"><span class="crest">EC</span><span>+1<b>Bahia</b></span></a>
+  <a class="button outline" href="/index.html">Voltar ao site</a>
+ </header>
+ <main>
+  <div class="page-wrap">
+   <p class="eyebrow">Área restrita</p>
+   <h1 class="page-title">Painel administrativo</h1>
+   <p id="adminGate" class="loading" role="status">Iniciando painel...</p>
+  </div>
+ </main>
+ <div class="toast" id="toast" role="status"></div>
+</body>
+</html>

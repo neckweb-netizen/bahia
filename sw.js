@@ -1,1 +1,11 @@
-self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.map(k=>caches.delete(k)))).then(()=>self.registration.unregister()).then(()=>self.clients.matchAll()).then(clients=>clients.forEach(client=>client.navigate(client.url)))));self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request))});
+// Retire legacy caches without navigating or reloading any open page.
+self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{
+ await self.clients.claim();
+ const keys=await caches.keys();
+ await Promise.all(keys.map(key=>caches.delete(key)));
+ await self.registration.unregister();
+ const clients=await self.clients.matchAll({type:'window'});
+ clients.forEach(client=>client.postMessage({type:'SERVICE_WORKER_REMOVED'}));
+})()));
+// No fetch handler: all requests use the browser's normal network path.
