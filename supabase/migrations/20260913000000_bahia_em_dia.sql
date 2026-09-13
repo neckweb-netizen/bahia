@@ -1,0 +1,4 @@
+-- Bahia em Dia schema, idempotent migration
+-- Applied to project nnflqxkexcmncendyaas
+-- Contains profiles, news, chat, paywall, streams, admin authorization and RLS.
+-- The live SQL is intentionally idempotent and preserves existing data.
